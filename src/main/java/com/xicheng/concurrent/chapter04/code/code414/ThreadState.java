@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
- * description
+ * 需要先使用jps查看当前线程的pid，然后使用jstack pid查看各线程状态
  *
  * @author liubin52
  * @date 2019-08-15 14:31:21

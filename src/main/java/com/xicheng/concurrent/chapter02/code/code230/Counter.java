@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * description
  *
- * @author liubin52
+ * @author xichengxml
  * @date 2019-08-12 12:56:16
  */
 public class Counter {
