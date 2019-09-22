@@ -31,8 +31,8 @@ public class ThreadLocal01 {
             person.name = "lisi";
         }).start();
     }
-}
 
-class Person {
-    String name = "zhangsan";
+    static class Person {
+        String name = "zhangsan";
+    }
 }
