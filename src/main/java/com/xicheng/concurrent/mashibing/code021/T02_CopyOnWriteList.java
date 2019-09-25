@@ -51,24 +51,17 @@ public class T02_CopyOnWriteList {
         Queue<Long> concurrentLinkedQueue = new ConcurrentLinkedQueue<>();
         CountDownLatch countDownLatch04 = new CountDownLatch(100);
         long start04 = System.nanoTime();
-        for (int i = 0; i < 100; i++) {
-            new Thread(() -> {
-                for (int j = 0; j < 1000; j++) {
-                    concurrentLinkedQueue.add(cnt.getAndIncrement());
-                }
-                countDownLatch04.countDown();
-            }).start();
-        }
+        batchAdd(countDownLatch04, concurrentLinkedQueue);
         countDownLatch04.await();
         System.out.println("ConcurrentLinkedQueue: " + concurrentLinkedQueue.size());
         System.out.println(System.nanoTime() - start04);
     }
 
-    private static void batchAdd(CountDownLatch countDownLatch, List<Long> list) {
+    private static void batchAdd(CountDownLatch countDownLatch, Collection<Long> collection) {
         for (int i = 0; i < 100; i++) {
             new Thread(() -> {
                 for (int j = 0; j < 1000; j++) {
-                    list.add(cnt.getAndIncrement());
+                    collection.add(cnt.getAndIncrement());
                 }
                 countDownLatch.countDown();
             }).start();
