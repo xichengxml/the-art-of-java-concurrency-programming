@@ -1,5 +1,9 @@
 package com.xicheng.concurrent.mashibing.code008;
 
+import com.xicheng.concurrent.mashibing.common.TestCaseException;
+import com.xicheng.concurrent.mashibing.common.ThreadPoolUtil;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -12,12 +16,13 @@ import java.util.concurrent.TimeUnit;
  * @author xichengxml
  * @date 2019-08-31 07:38
  */
+@Slf4j
 public class T {
 
     private int cnt = 0;
 
     private synchronized void m() {
-        System.out.println(Thread.currentThread().getName() + " start...");
+        log.info(Thread.currentThread().getName() + " start...");
         for (int i = 0; i < 10; i++) {
             try {
                 TimeUnit.SECONDS.sleep(1);
@@ -26,9 +31,9 @@ public class T {
             }
             if (cnt == 5) {
                 // 此处抛出异常，锁将被释放，要想不被释放，可以在这里进行catche，然后让循环继续
-                int result = cnt / 0;
+	            throw new TestCaseException("在这抛出异常");
             }
-            System.out.println("cnt: " + cnt);
+            log.info("cnt: {}", cnt);
             cnt++;
         }
     }
@@ -39,7 +44,7 @@ public class T {
 
     public static void main(String[] args) {
         T t = new T();
-        new Thread(() -> t.m(), "t1").start();
+	    ThreadPoolUtil.executeThread(t::m);
         // 保证线程启动顺序
         try {
             TimeUnit.SECONDS.sleep(3);
@@ -47,6 +52,6 @@ public class T {
             e.printStackTrace();
         }
         // 预期结果是10.实际是5
-        System.out.println("cnt result: " + t.getCnt());
+        log.info("cnt result: {}", t.getCnt());
     }
 }

@@ -1,38 +1,42 @@
 package com.xicheng.concurrent.mashibing.code004;
 
+import com.xicheng.concurrent.mashibing.common.ThreadPoolUtil;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.TimeUnit;
 
 /**
  * 同步方法和非同步方法是否可以同时调用
- *
- * @author liubin52
+ * @author xichengxml
  * @date 2019-08-30 18:12:15
  */
+@Slf4j
 public class SynchronizedExample {
 
 	private synchronized void print01() {
-		System.out.println("print01 start...");
+		log.info("print01 start...");
 		try {
 			TimeUnit.SECONDS.sleep(10);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println("print01 end");
+		log.info("print01 end");
 	}
 
 	private void print02() {
-		System.out.println("print02 start...");
+		log.info("print02 start...");
 		try {
 			TimeUnit.SECONDS.sleep(5);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println("print02 end");
+		log.info("print02 end");
 	}
 
 	public static void main(String[] args) {
 		SynchronizedExample synchronizedExample = new SynchronizedExample();
-		new Thread(() -> synchronizedExample.print01(), "t1").start();
-		new Thread(() -> synchronizedExample.print02(), "t2").start();
+		ThreadPoolUtil.executeThread(synchronizedExample::print01);
+		ThreadPoolUtil.executeThread(synchronizedExample::print02);
 	}
+
 }

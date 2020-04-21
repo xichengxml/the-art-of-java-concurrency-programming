@@ -5,14 +5,14 @@ import java.util.concurrent.TimeUnit;
 /**
  * description
  *
- * @author liubin52
+ * @author xichengxml
  * @date 2019-08-30 17:22:30
  */
 public class SynchronizedExample04 {
 
 	private static int cnt = 1000;
 
-	private static final int THREAD_CNT = cnt;
+	private static final int THREAD_CNT = 1000;
 
 	/**
 	 * 等同
@@ -55,15 +55,12 @@ public class SynchronizedExample04 {
 	 */
 	public static void main(String[] args) throws Exception {
 		for (int i = 0; i < THREAD_CNT; i++) {
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						// new SynchronizedExample04().decrease02();
-						new SynchronizedExample04().decrease03();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+			new Thread(() -> {
+				try {
+					// new SynchronizedExample04().decrease02();
+					new SynchronizedExample04().decrease03();
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}).start();
 		}

@@ -1,5 +1,10 @@
 package com.xicheng.concurrent.mashibing.code005;
 
+import com.xicheng.concurrent.mashibing.common.ThreadPoolUtil;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -10,6 +15,9 @@ import java.util.concurrent.TimeUnit;
  * @author xichengxml
  * @date 2019-08-31 04:56
  */
+@Slf4j
+@Setter
+@Getter
 public class AccountExample {
 
     private String name;
@@ -30,17 +38,17 @@ public class AccountExample {
         this.balance += balance;
     }
 
-    private double getUserBalance() {
+    private /*synchronized*/ double getUserBalance() {
         return this.balance;
     }
 
     public static void main(String[] args) throws InterruptedException {
         AccountExample accountExample = new AccountExample("zhangsan", 10);
 
-        new Thread(() -> accountExample.setUserBalance(100), "set").start();
+	    ThreadPoolUtil.executeThread(() -> accountExample.setUserBalance(100));
         TimeUnit.SECONDS.sleep(1);
-        System.out.println(accountExample.getUserBalance());
+        log.info("balance: {}", accountExample.getUserBalance());
         TimeUnit.SECONDS.sleep(2);
-        System.out.println(accountExample.getUserBalance());
+	    log.info("balance: {}", accountExample.getUserBalance());
     }
 }

@@ -1,5 +1,7 @@
 package com.xicheng.concurrent.mashibing.code007;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -8,10 +10,11 @@ import java.util.concurrent.TimeUnit;
  * @author xichengxml
  * @date 2019-08-31 06:06
  */
+@Slf4j
 public class Son extends Father {
     @Override
     public synchronized void m() {
-        System.out.println("som m start...");
+        log.info("som m start...");
         // 在这睡1秒，保证打印的顺序
         try {
             TimeUnit.SECONDS.sleep(1);
@@ -25,6 +28,6 @@ public class Son extends Father {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("son m end");
+        log.info("son m end");
     }
 }

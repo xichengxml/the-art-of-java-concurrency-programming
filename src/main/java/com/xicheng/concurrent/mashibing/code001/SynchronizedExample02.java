@@ -3,7 +3,7 @@ package com.xicheng.concurrent.mashibing.code001;
 /**
  * description
  *
- * @author liubin52
+ * @author xichengxml
  * @date 2019-08-30 17:13:02
  */
 public class SynchronizedExample02 {
@@ -22,9 +22,9 @@ public class SynchronizedExample02 {
 	}
 
 	public static void main(String[] args) {
-		SynchronizedExample02 syncronizedExample = new SynchronizedExample02();
+		SynchronizedExample02 synchronizedExample = new SynchronizedExample02();
 		for (int i = 0; i < 10; i++) {
-			syncronizedExample.decrease();
+			new Thread(() -> synchronizedExample.decrease()).start();
 		}
 	}
 }

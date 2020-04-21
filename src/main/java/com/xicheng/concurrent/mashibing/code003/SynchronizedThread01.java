@@ -3,7 +3,7 @@ package com.xicheng.concurrent.mashibing.code003;
 /**
  * 分析一下输出
  *
- * @author liubin52
+ * @author xichengxml
  * @date 2019-08-30 18:02:08
  */
 public class SynchronizedThread01 implements Runnable {
