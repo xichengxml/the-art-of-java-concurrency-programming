@@ -1,5 +1,8 @@
 package com.xicheng.concurrent.mashibing.code013;
 
+import com.xicheng.concurrent.mashibing.common.ThreadPoolUtil;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -10,6 +13,7 @@ import java.util.concurrent.TimeUnit;
  * @author xichengxml
  * @date 2019-08-31 10:39
  */
+@Slf4j
 public class T {
 
     private int cnt = 0;
@@ -21,21 +25,21 @@ public class T {
             e.printStackTrace();
         }
 
-        System.out.println(Thread.currentThread().getName());
+        log.info(Thread.currentThread().getName());
     }
 
     public static void main(String[] args) {
         T t = new T();
-        new Thread(t::m, "t1").start();
+	    ThreadPoolUtil.executeThread(t::m);
 
         // 改变对象中的某个属性
-        System.out.println("change field");
+        log.info("change field");
         t.cnt++;
-        new Thread(t::m, "t2").start();
+        ThreadPoolUtil.executeThread(t::m);
 
         // 改变对象引用
-        System.out.println("change reference");
+        log.info("change reference");
         t = new T();
-        new Thread(t::m, "t3").start();
+        ThreadPoolUtil.executeThread(t::m);
     }
 }

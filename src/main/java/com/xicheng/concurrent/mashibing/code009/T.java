@@ -1,5 +1,8 @@
 package com.xicheng.concurrent.mashibing.code009;
 
+import com.xicheng.concurrent.mashibing.common.ThreadPoolUtil;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,35 +23,38 @@ import java.util.concurrent.TimeUnit;
  * @author xichengxml
  * @date 2019-08-31 08:02
  */
+@Slf4j
 public class T {
 
-    // 对比有无volatile的情况下，整个程序运行结果的区别
-    private /*volatile*/ boolean running = true;
+	/**
+	 * 对比有无volatile的情况下，整个程序运行结果的区别
+	 */
+    private volatile boolean running = true;
 
-    // 纯粹用于打印使用，当计时器使
+	/**
+	 * 纯粹用于打印使用，当计时器使
+	 */
     private int cnt = 0;
 
     private void m() {
-        System.out.println("m start...");
+        log.info("m start...");
         while (running) {
             try {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.MILLISECONDS.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println(Thread.currentThread().getName() + ", cnt: " + cnt++);
+            log.info("name: {}, cnt: {}", Thread.currentThread().getName(), cnt++);
         }
-        System.out.println("m end...");
+        log.info("m end...");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         T t = new T();
-        new Thread(() -> t.m(), "t1").start();
-        try {
-            TimeUnit.SECONDS.sleep(2);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+	    ThreadPoolUtil.executeThread(t::m);
+	    TimeUnit.MILLISECONDS.sleep(20);
         t.running = false;
+
+        TimeUnit.SECONDS.sleep(10);
     }
 }

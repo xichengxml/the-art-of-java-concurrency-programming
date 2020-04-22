@@ -1,5 +1,8 @@
 package com.xicheng.concurrent.mashibing.code015;
 
+import com.xicheng.concurrent.mashibing.common.ThreadPoolUtil;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @author xichengxml
  * @date 2019-09-07 15:17
  */
+@Slf4j
 public class MyContainer03 {
 
     private List<Integer> list = new ArrayList<>();
@@ -28,12 +32,12 @@ public class MyContainer03 {
         return list.size();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         MyContainer03 container = new MyContainer03();
 
         Object lock = new Object();
 
-        new Thread(() -> {
+        ThreadPoolUtil.executeThread(() -> {
             synchronized (lock) {
                 if (container.size() != 5) {
                     try {
@@ -42,37 +46,33 @@ public class MyContainer03 {
                         e.printStackTrace();
                     }
                 }
-                System.out.println("send some notification....");
+                log.info("send some notification....");
                 lock.notify();
             }
-        }, "t2").start();
+        });
 
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        TimeUnit.SECONDS.sleep(1);
 
-        new Thread(() -> {
-            synchronized (lock) {
-                for (int i = 0; i < 10; i++) {
-                    container.add(i);
-                    System.out.println(Thread.currentThread().getName() + " add element: " + i);
-                    try {
-                        TimeUnit.SECONDS.sleep(1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    if (container.size() == 5) {
-                        lock.notify();
-                        try {
-                            lock.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        }, "t1").start();
+        ThreadPoolUtil.executeThread(() -> {
+	        synchronized (lock) {
+		        for (int i = 0; i < 10; i++) {
+			        container.add(i);
+			        log.info("name: {}, add element: {}", Thread.currentThread().getName(), i);
+			        try {
+				        TimeUnit.SECONDS.sleep(1);
+			        } catch (InterruptedException e) {
+				        e.printStackTrace();
+			        }
+			        if (container.size() == 5) {
+				        lock.notify();
+				        try {
+					        lock.wait();
+				        } catch (InterruptedException e) {
+					        e.printStackTrace();
+				        }
+			        }
+		        }
+	        }
+        });
     }
 }

@@ -1,5 +1,7 @@
 package com.xicheng.concurrent.mashibing.code012;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -11,6 +13,7 @@ import java.util.concurrent.TimeUnit;
  * @author xichengxml
  * @date 2019-08-31 10:08
  */
+@Slf4j
 public class T {
 
     /**
@@ -30,7 +33,7 @@ public class T {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println(Thread.currentThread().getName() + " running...");
+            // log.info(Thread.currentThread().getName() + " running...");
             cnt1++;
             try {
                 TimeUnit.SECONDS.sleep(2);
@@ -47,7 +50,7 @@ public class T {
             e.printStackTrace();
         }
         synchronized (this) {
-            System.out.println(Thread.currentThread().getName() + "running...");
+            // log.info(Thread.currentThread().getName() + "running...");
             cnt2++;
         }
         try {
@@ -84,8 +87,8 @@ public class T {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(t1.cnt1);
-        System.out.println(t2.cnt2);
+        log.info("{}", t1.cnt1);
+        log.info("{}", t2.cnt2);
 
         threadList.forEach(o -> {
             try {
@@ -95,7 +98,7 @@ public class T {
             }
         });
 
-        System.out.println("finished");
+        log.info("finished");
     }
 
 }

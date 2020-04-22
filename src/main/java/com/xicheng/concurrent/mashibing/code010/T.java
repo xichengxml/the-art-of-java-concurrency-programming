@@ -1,5 +1,7 @@
 package com.xicheng.concurrent.mashibing.code010;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import java.util.List;
  * @author xichengxml
  * @date 2019-08-31 09:44
  */
+@Slf4j
 public class T {
 
     private volatile int cnt = 0;
@@ -37,6 +40,6 @@ public class T {
                 e.printStackTrace();
             }
         });
-        System.out.println(t.cnt);
+        log.info("cnt: {}", t.cnt);
     }
 }

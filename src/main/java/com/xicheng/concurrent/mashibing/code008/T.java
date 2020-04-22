@@ -30,7 +30,7 @@ public class T {
                 e.printStackTrace();
             }
             if (cnt == 5) {
-                // 此处抛出异常，锁将被释放，要想不被释放，可以在这里进行catche，然后让循环继续
+                // 此处抛出异常，锁将被释放，要想不被释放，可以在这里进行catch，然后让循环继续
 	            throw new TestCaseException("在这抛出异常");
             }
             log.info("cnt: {}", cnt);
