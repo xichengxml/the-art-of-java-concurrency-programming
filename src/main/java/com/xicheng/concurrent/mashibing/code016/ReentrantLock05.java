@@ -1,5 +1,7 @@
 package com.xicheng.concurrent.mashibing.code016;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -9,22 +11,26 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author xichengxml
  * @date 2019-09-07 17:22
  */
+@Slf4j
 public class ReentrantLock05 extends Thread {
 
-    // 注意这里是static，锁才具有唯一性，否则每次new对象都会产生一把锁
+	/**
+	  * 注意这里是static，锁才具有唯一性，否则每次new对象都会产生一把锁
+	 */
     private static ReentrantLock lock = new ReentrantLock(true);
 
     @Override
     public void run() {
         for (int i = 0; i < 30; i++) {
             lock.lock();
-            System.out.println(Thread.currentThread().getName() + "获得了锁" + i);
             try {
-                TimeUnit.SECONDS.sleep(1);
+	            log.info("name: {}, 获得了锁: {}", Thread.currentThread().getName(), i);
+	            TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } finally {
+	            lock.unlock();
             }
-            lock.unlock();
         }
     }
 

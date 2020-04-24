@@ -1,5 +1,8 @@
 package com.xicheng.concurrent.mashibing.code016;
 
+import com.xicheng.concurrent.mashibing.common.ThreadPoolUtil;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -11,6 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author xichengxml
  * @date 2019-09-07 16:15
  */
+@Slf4j
 public class ReentrantLock02 {
 
     private ReentrantLock lock = new ReentrantLock();
@@ -19,7 +23,7 @@ public class ReentrantLock02 {
         lock.lock();
         try {
             for (int i = 0; i < 10; i++) {
-                System.out.println("m1: " + i);
+                log.info("m1: {}", i);
                 TimeUnit.SECONDS.sleep(1);
             }
         } catch (InterruptedException e) {
@@ -31,19 +35,20 @@ public class ReentrantLock02 {
 
     private void m2() {
         lock.lock();
-        System.out.println("m2");
-        lock.unlock();
+	    try {
+		    log.info("m2");
+	    } catch (Exception e) {
+		    log.error("error: ", e);
+	    } finally {
+		    lock.unlock();
+	    }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         ReentrantLock02 instance = new ReentrantLock02();
-        new Thread(instance::m1, "t1").start();
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        new Thread(instance::m2, "t2").start();
+	    ThreadPoolUtil.executeThread(instance::m1);
+	    TimeUnit.SECONDS.sleep(1);
+        ThreadPoolUtil.executeThread(instance::m2);
     }
 }
 

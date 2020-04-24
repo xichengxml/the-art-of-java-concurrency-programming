@@ -1,5 +1,8 @@
 package com.xicheng.concurrent.mashibing.code015;
 
+import com.xicheng.concurrent.mashibing.common.ThreadPoolUtil;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -17,6 +20,7 @@ import java.util.concurrent.TimeUnit;
  * @author xichengxml
  * @date 2019-09-07 15:37
  */
+@Slf4j
 public class MyContainer04 {
 
     private List<Integer> list = new ArrayList<>();
@@ -29,43 +33,39 @@ public class MyContainer04 {
         return list.size();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         MyContainer04 container = new MyContainer04();
         CountDownLatch countDownLatch = new CountDownLatch(1);
 
-        new Thread(() -> {
-            for (int i = 0; i < 10; i++) {
-                container.add(i);
-                System.out.println(Thread.currentThread().getName() + " add element: " + i);
+	    ThreadPoolUtil.executeThread(() -> {
+		    for (int i = 0; i < 10; i++) {
+			    container.add(i);
+			    log.info("name: {}, add element: {}", Thread.currentThread().getName(), i);
 
-                if (container.size() == 5) {
-                    countDownLatch.countDown();
-                }
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, "t1").start();
+			    if (container.size() == 5) {
+				    countDownLatch.countDown();
+			    }
+			    try {
+				    TimeUnit.SECONDS.sleep(1);
+			    } catch (InterruptedException e) {
+				    e.printStackTrace();
+			    }
+		    }
+	    });
 
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+	    TimeUnit.SECONDS.sleep(1);
 
-        new Thread(() -> {
-            if (container.size() != 5) {
-                try {
-                    countDownLatch.await();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                // 也可以指定超时时间
-                // countDownLatch.await(5, TimeUnit.SECONDS);
-                System.out.println("send some notification");
-            }
-        }, "t2").start();
+		ThreadPoolUtil.executeThread(() -> {
+			if (container.size() != 5) {
+				try {
+					countDownLatch.await();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				// 也可以指定超时时间
+				// countDownLatch.await(5, TimeUnit.SECONDS);
+				log.info("send some notification");
+			}
+		});
     }
 }
