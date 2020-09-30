@@ -1,11 +1,15 @@
 package com.xicheng.concurrent.mashibing;
 
+import com.xicheng.concurrent.util.LogUtil;
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * description
  *
  * @author liubin52
  * @date 2019-08-30 17:13:02
  */
+@Slf4j
 public class C02_Synchronized {
 
 	private int cnt = 10;
@@ -17,7 +21,7 @@ public class C02_Synchronized {
 		// 任何线程想要执行以下代码，必须先拿到this的锁
 		synchronized (this) {
 			cnt--;
-			System.out.println("Thread name: " + Thread.currentThread().getName() + "--count: " + cnt);
+			LogUtil.info(log, "decrease thread name: {}, count: {}", Thread.currentThread().getName(), cnt);
 		}
 	}
 

@@ -1,5 +1,8 @@
 package com.xicheng.concurrent.mashibing;
 
+import com.xicheng.concurrent.util.LogUtil;
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * synchronized关键字
  * 对某个对象加锁
@@ -7,6 +10,7 @@ package com.xicheng.concurrent.mashibing;
  * @author xichengxml
  * @date 2019-08-30 17:06:05
  */
+@Slf4j
 public class C01_Synchronized {
 
     private int cnt = 10;
@@ -24,7 +28,7 @@ public class C01_Synchronized {
         // 任何线程想要执行以下代码，必须拿到object的锁
         synchronized (object) {
             cnt--;
-            System.out.println("Thread name: " + Thread.currentThread().getName() + " count: " + cnt);
+            LogUtil.info(log, "decrease Thread name: {}, count: {}", Thread.currentThread().getName(), cnt);
         }
     }
 }
