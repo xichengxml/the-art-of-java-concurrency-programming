@@ -3,7 +3,7 @@ package com.xicheng.concurrent.mashibing;
 /**
  * 分析一下输出
  *
- * @author liubin52
+ * @author xichengxml
  * @date 2019-08-30 18:02:08
  */
 public class C05_Synchronized implements Runnable {
