@@ -22,6 +22,9 @@ public class C43_SynchronousQueue {
                 // 阻塞等待消费者消费
                 stringBlockingQueue.put("value1");
                 stringBlockingQueue.put("value2");
+                stringBlockingQueue.put("value3");
+                stringBlockingQueue.put("value4");
+                stringBlockingQueue.put("value5");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -33,14 +36,18 @@ public class C43_SynchronousQueue {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(stringBlockingQueue.size());
 
-        new Thread(() -> {
-            try {
-                System.out.println(stringBlockingQueue.take());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }, "t2").start();
+        for (int i = 0; i < 5; i++) {
+            new Thread(() -> {
+                try {
+                    // size始终为0
+                    System.out.println(Thread.currentThread().getName() + "-queue size: " + stringBlockingQueue.size());
+                    System.out.println(Thread.currentThread().getName() + "-take: " + stringBlockingQueue.take());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }, "t" + i).start();
+            TimeUnit.SECONDS.sleep(1);
+        }
     }
 }
