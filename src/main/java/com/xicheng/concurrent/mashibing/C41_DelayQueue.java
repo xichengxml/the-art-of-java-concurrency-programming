@@ -25,11 +25,12 @@ public class C41_DelayQueue {
 
         @Override
         public long getDelay(TimeUnit unit) {
-            return unit.convert(runningTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+            return unit.convert(runningTime, TimeUnit.MILLISECONDS);
         }
 
         /**
          * 当前任务和传入任务的执行顺序
+         *
          * @param o
          * @return
          */
@@ -48,12 +49,11 @@ public class C41_DelayQueue {
     }
 
     public static void main(String[] args) throws Exception {
-        long now = System.currentTimeMillis();
-        MyTask t1 = new MyTask(now + 1000, "t1");
-        MyTask t2 = new MyTask(now + 2000, "t2");
-        MyTask t3 = new MyTask(now + 1500, "t3");
-        MyTask t4 = new MyTask(now + 2500, "t4");
-        MyTask t5 = new MyTask(now + 500, "t5");
+        MyTask t1 = new MyTask(1000, "t1");
+        MyTask t2 = new MyTask(2000, "t2");
+        MyTask t3 = new MyTask(1500, "t3");
+        MyTask t4 = new MyTask(2500, "t4");
+        MyTask t5 = new MyTask(500, "t5");
 
         taskQueue.put(t1);
         taskQueue.put(t2);
