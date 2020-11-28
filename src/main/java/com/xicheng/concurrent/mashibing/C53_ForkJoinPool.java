@@ -48,7 +48,7 @@ public class C53_ForkJoinPool {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         // 串行计算
         log.info("serial computing start...");
@@ -62,33 +62,37 @@ public class C53_ForkJoinPool {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
 
         // 使用RecursiveAction
-        sum = 0;
         log.info("RecursiveAction start...");
         AddAction addAction = new AddAction(0, ARRAY_SIZE);
         forkJoinPool.execute(addAction);
         addAction.join();
-       /* try {
+        try {
             TimeUnit.SECONDS.sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }*/
-        log.info("RecursiveAction sum: {}", sum);
+        }
+        // 始终为0
+        log.info("RecursiveAction sum: {}", addAction.result);
 
         // 使用RecursiveTask
         log.info("RecursiveTask start...");
         AddTask addTask = new AddTask(0, ARRAY_SIZE);
         forkJoinPool.execute(addTask);
         log.info("RecursiveTask sum: {}", addTask.join());
+
+        System.in.read();
     }
 
     /**
-     * 结果不准确，没有任何规律
+     * 没有返回值的任务
      */
     private static class AddAction extends RecursiveAction {
 
         private int start;
 
         private int end;
+
+        private int result;
 
         public AddAction(int start, int end) {
             this.start = start;
@@ -99,19 +103,24 @@ public class C53_ForkJoinPool {
         protected void compute() {
             if (end - start <= TASK_MAX) {
                 for (int i = start; i < end; i++) {
-                    sum += numArray[i];
+                    result += numArray[i];
                 }
-                log.info("{}", sum);
+                // log.info("{}", sum);
             } else {
                 int middle = (start + end) / 2;
                 AddAction subTask01 = new AddAction(start, middle);
                 AddAction subTask02 = new AddAction(middle, end);
                 subTask01.fork();
                 subTask02.fork();
+                subTask01.join();
+                subTask02.join();
             }
         }
     }
 
+    /**
+     * 有返回值的任务
+     */
     private static class AddTask extends RecursiveTask<Integer> {
 
         private int start, end;
