@@ -76,7 +76,7 @@ public class C15_Synchronized {
             }, "thread-m2-" + i));
         }
 
-        threadList.forEach(o -> o.start());
+        threadList.forEach(Thread::start);
 
         // 模拟执行一段时间，比较二者执行效率
         try {

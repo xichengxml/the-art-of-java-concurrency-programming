@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class C14_AtomicInteger {
 
-    private AtomicInteger atomicInteger = new AtomicInteger(0);
+    private final AtomicInteger atomicInteger = new AtomicInteger(0);
 
     private void m() {
         for (int i = 0; i < 10000; i++) {
@@ -27,7 +27,7 @@ public class C14_AtomicInteger {
             threadList.add(new Thread(t::m, "thread" + i));
         }
 
-        threadList.forEach((o) -> o.start());
+        threadList.forEach(Thread::start);
 
         // 在此处取值并不能保证原子性，所以原子类的取值需要自己做同步？
         System.out.println(t.atomicInteger);
