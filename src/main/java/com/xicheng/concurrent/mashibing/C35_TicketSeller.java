@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  */
 public class C35_TicketSeller {
 
-    private static Queue<String> ticketQueue = new ConcurrentLinkedDeque<>();
+    private static final Queue<String> ticketQueue = new ConcurrentLinkedDeque<>();
 
     static {
         for (int i = 0; i < 10000; i++) {

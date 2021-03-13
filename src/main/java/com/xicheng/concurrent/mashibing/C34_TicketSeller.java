@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class C34_TicketSeller {
 
-    private static List<String> ticketList = new ArrayList<>();
+    private static final List<String> ticketList = new ArrayList<>();
 
     static {
         for (int i = 0; i < 10000; i++) {
