@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
  * @author xichengxml
  * @date 2019-08-31 05:14
  */
-public class C09_Synchronized {
+public class C09Synchronized {
 
     private synchronized void m1() {
         System.out.println("m1 start...");
@@ -32,7 +32,7 @@ public class C09_Synchronized {
     }
 
     public static void main(String[] args) {
-        C09_Synchronized t = new C09_Synchronized();
+        C09Synchronized t = new C09Synchronized();
         t.m1();
     }
 }

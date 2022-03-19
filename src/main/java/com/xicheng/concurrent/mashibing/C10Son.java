@@ -1,7 +1,5 @@
 package com.xicheng.concurrent.mashibing;
 
-import com.xicheng.concurrent.mashibing.C10_Father;
-
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -10,7 +8,8 @@ import java.util.concurrent.TimeUnit;
  * @author xichengxml
  * @date 2019-08-31 06:06
  */
-public class C10_Son extends C10_Father {
+public class C10Son extends C10Father {
+
     @Override
     public synchronized void m() {
         System.out.println("som m start...");

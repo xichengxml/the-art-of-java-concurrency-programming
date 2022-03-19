@@ -1,5 +1,7 @@
 package com.xicheng.concurrent.mashibing;
 
+import com.xicheng.concurrent.mashibing.common.ThreadPoolUtil;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -10,13 +12,13 @@ import java.util.concurrent.TimeUnit;
  * @author xichengxml
  * @date 2019-08-31 04:56
  */
-public class C08_AccountExample {
+public class C08AccountExample {
 
     private String name;
 
     private double balance;
 
-    public C08_AccountExample(String name, double balance) {
+    public C08AccountExample(String name, double balance) {
         this.name = name;
         this.balance = balance;
     }
@@ -35,9 +37,9 @@ public class C08_AccountExample {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        C08_AccountExample accountExample = new C08_AccountExample("zhangsan", 10);
+        C08AccountExample accountExample = new C08AccountExample("zhangsan", 10);
 
-        new Thread(() -> accountExample.setUserBalance(100), "set").start();
+        ThreadPoolUtil.executeThread(() -> accountExample.setUserBalance(199D));
         TimeUnit.SECONDS.sleep(1);
         System.out.println(accountExample.getUserBalance());
         TimeUnit.SECONDS.sleep(2);

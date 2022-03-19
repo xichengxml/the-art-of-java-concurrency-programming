@@ -1,5 +1,7 @@
 package com.xicheng.concurrent.mashibing;
 
+import com.xicheng.concurrent.mashibing.common.ThreadPoolUtil;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -12,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * @author xichengxml
  * @date 2019-08-31 07:38
  */
-public class C11_Synchronized {
+public class C11Synchronized {
 
     private int cnt = 0;
 
@@ -38,8 +40,8 @@ public class C11_Synchronized {
     }
 
     public static void main(String[] args) {
-        C11_Synchronized t = new C11_Synchronized();
-        new Thread(() -> t.m(), "t1").start();
+        C11Synchronized t = new C11Synchronized();
+        ThreadPoolUtil.executeThread(t::m);
         // 保证线程启动顺序
         try {
             TimeUnit.SECONDS.sleep(3);
